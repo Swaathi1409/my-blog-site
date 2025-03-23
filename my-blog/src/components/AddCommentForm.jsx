@@ -8,29 +8,41 @@ const AddCommentForm = ({articleName, onArticleUpdated}) => {
     const {user} = useUser();
 
     const addComment = async() => {
+        // Log important variables to help debug
+        console.log("Environment:", import.meta.env);
+        console.log("Article name:", articleName);
+        
         if (!commentText.trim()) {
             setErrorMessage('Comment cannot be empty');
             return;
         }
-
+    
         try {
             const token = user && await user.getIdToken();
             
-            // If user is not logged in, handle gracefully
             if (!token) {
                 setErrorMessage('You must be logged in to comment');
                 return;
             }
             
             const headers = { authtoken: token };
-
-            const API_URL = import.meta.env.PROD ? 'https://quill-nest.onrender.com/api' : 'http://localhost:8000/api';
-
-            const response = await axios.post(`${API_URL}/articles/${articleName}/comments`, {
-
-                // Send only the text, server will get user info from token
+    
+            // Force production URL when on render.com domain
+            const isProduction = import.meta.env.PROD || 
+                                 window.location.hostname.includes('render.com');
+            const API_URL = isProduction 
+                           ? 'https://quill-nest.onrender.com/api'
+                           : 'http://localhost:8000/api';
+                           
+            console.log("Using API URL:", API_URL);
+            
+            // Log the full URL being used
+            const fullUrl = `${API_URL}/articles/${articleName}/comments`;
+            console.log("Full request URL:", fullUrl);
+    
+            const response = await axios.post(fullUrl, {
                 text: commentText.trim(),
-                postedBy: user.email  // Keep this for backward compatibility
+                postedBy: user.email
             }, { headers });
             
             const updatedArticle = response.data;
