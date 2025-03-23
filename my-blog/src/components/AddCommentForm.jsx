@@ -24,7 +24,9 @@ const AddCommentForm = ({articleName, onArticleUpdated}) => {
             
             const headers = { authtoken: token };
 
-            const API_URL = import.meta.env.PROD ? 'https://quill-nest.onrender.com/':'http://localhost:8000/api';
+            const API_URL = import.meta.env.PROD 
+  ? 'https://quill-nest.onrender.com/api'  // Add /api here to be consistent
+  : 'http://localhost:8000/api';
 
             const response = await axios.post(`${API_URL}/articles/${articleName}/comments`, {
 
