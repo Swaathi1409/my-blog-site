@@ -24,7 +24,10 @@ const AddCommentForm = ({articleName, onArticleUpdated}) => {
             
             const headers = { authtoken: token };
 
-            const response = await axios.post(`http://localhost:8000/api/articles/${articleName}/comments`, {
+            const API_URL = import.meta.env.PROD ? 'https://my-blog-site-6.onrender.com/api':'http://localhost:8000/api';
+
+            const response = await axios.post(`${API_URL}/articles/${articleName}/comments`, {
+
                 // Send only the text, server will get user info from token
                 text: commentText.trim(),
                 postedBy: user.email  // Keep this for backward compatibility
