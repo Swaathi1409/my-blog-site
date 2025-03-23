@@ -21,7 +21,7 @@ app.get(/^(?!\/api).+/, (req, res)=> {
 
 // In your server.js
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'https://my-blog-site-6.onrender.com'], // or whatever port your React app is running on
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'https://my-blog-site-6.onrender.com', 'https://quill-nest.onrender.com/'], // or whatever port your React app is running on
     credentials: true
 }));
 
